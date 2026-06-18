@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+{{ section.content | safe }}
+
+{% set posts = get_section(path="posts/_index.md") %}
+{% if posts.pages | length > 0 %}
+<h2>&gt; posts</h2>
+<ul class="post-list">
+{% for page in posts.pages %}
+<li><time datetime="{{ page.date }}">{{ page.date | date(format="%Y-%m-%d") }}</time> · <a href="{{ page.permalink | safe }}">{{ page.title }}</a></li>
+{% endfor %}
+</ul>
+<p><a href="/posts/">all posts →</a></p>
+{% endif %}
+
+{% if config.extra.github or config.extra.linkedin or config.extra.email %}
+<h2>&gt; connect</h2>
+<ul class="connect">
+{% if config.extra.github %}<li><strong>github</strong> · <a href="https://github.com/{{ config.extra.github }}" rel="me">{{ config.extra.github }}</a></li>{% endif %}
+{% if config.extra.linkedin %}<li><strong>linkedin</strong> · <a href="https://www.linkedin.com/in/{{ config.extra.linkedin }}" rel="me">{{ config.extra.linkedin }}</a></li>{% endif %}
+{% if config.extra.email %}<li><strong>email</strong> · <a href="mailto:{{ config.extra.email }}">{{ config.extra.email }}</a></li>{% endif %}
+</ul>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,34 @@
+# Demo config — used when building this repo in isolation
+# (e.g. `zola serve` from inside the theme to preview).
+# When consumed as a theme, the *consumer's* config.toml wins.
+
+base_url = "https://example.com"
+title = "zola-quiet — a quiet two-skin theme"
+description = "Minima-flavoured typographic skin + monospace terminal skin. Light/dark toggle."
+default_language = "en"
+compile_sass = false
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+build_search_index = false
+
+taxonomies = [
+    { name = "tags", paginate_by = 20, feed = true },
+]
+
+[markdown]
+smart_punctuation = false
+
+[extra]
+author = "you"
+github = ""
+linkedin = ""
+email = ""
+# Optional multi-line ASCII shown as a quiet signature above the content.
+# Leave empty to omit the sidebar entirely.
+ascii_signature = """
+╭─────────────────────╮
+│                     │
+│   ❯  zola-quiet  _  │
+│                     │
+╰─────────────────────╯
+"""
