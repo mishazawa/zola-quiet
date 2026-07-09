@@ -12,12 +12,13 @@
 /* Set data-theme + data-skin BEFORE the stylesheet loads, so the
    correct sheet ships on first paint and there's no flash. */
 (function(){
+  var skins = { terminal: '/style-terminal.css', tui: '/style-tui.css' };
   try {
     var t = localStorage.getItem('theme');
     if (t==='dark'||t==='light') document.documentElement.setAttribute('data-theme', t);
     var s = localStorage.getItem('skin');
-    if (s==='terminal') document.documentElement.setAttribute('data-skin','terminal');
-    var href = (s==='terminal') ? '/style-terminal.css' : '/style.css';
+    if (s==='terminal' || s==='tui') document.documentElement.setAttribute('data-skin', s);
+    var href = skins[s] || '/style.css';
     var link = document.createElement('link');
     link.rel = 'stylesheet'; link.id = 'site-stylesheet'; link.href = href;
     document.head.appendChild(link);
@@ -54,14 +55,16 @@
   </button>
 </div>
 <div class="layout">
+{% block sidebar %}
 {% if config.extra.ascii_signature %}
 <aside class="sidebar">
 <pre class="ascii" aria-hidden="true">
 {{ config.extra.ascii_signature }}
 </pre>
+{% block sidebar_extras %}{% endblock %}
 </aside>
 {% endif %}
-{% block sidebar %}{% endblock %}
+{% endblock %}
 <div class="content">
 <main>
 {% block content %}{% endblock %}
@@ -86,17 +89,25 @@
 </div>
 </div>
 <script>
-/* skin toggle (typography <-> terminal) */
+/* skin toggle: cycles minima → terminal → tui → minima */
 (function(){
   var btn = document.querySelector('.skin-toggle');
   if (!btn) return;
+  var order = ['minima', 'terminal', 'tui'];
+  var hrefs = {
+    minima:   '/style.css',
+    terminal: '/style-terminal.css',
+    tui:      '/style-tui.css',
+  };
   btn.addEventListener('click', function(){
-    var cur = document.documentElement.getAttribute('data-skin') === 'terminal' ? 'terminal' : 'minima';
-    var next = cur === 'terminal' ? 'minima' : 'terminal';
-    if (next === 'terminal') document.documentElement.setAttribute('data-skin','terminal');
-    else document.documentElement.removeAttribute('data-skin');
+    var cur = document.documentElement.getAttribute('data-skin');
+    if (order.indexOf(cur) < 0) cur = 'minima';
+    var next = order[(order.indexOf(cur) + 1) % order.length];
+    if (next === 'minima') document.documentElement.removeAttribute('data-skin');
+    else document.documentElement.setAttribute('data-skin', next);
     var link = document.getElementById('site-stylesheet');
-    if (link) link.setAttribute('href', next === 'terminal' ? '/style-terminal.css' : '/style.css');
+    if (link) link.setAttribute('href', hrefs[next]);
+    btn.setAttribute('title', 'Skin: ' + next + ' (click for next)');
     try { localStorage.setItem('skin', next); } catch(e){}
   });
 })();
@@ -128,6 +139,40 @@ syncSyntaxTheme();
     try { localStorage.setItem('theme', next); } catch(e){}
     syncSyntaxTheme();
   });
+})();
+
+/* TOC scroll-spy: highlights the TOC link whose target heading is
+   currently closest to the top of the viewport. No-op when there's no
+   TOC on the page. */
+(function(){
+  var links = document.querySelectorAll('.toc-list a[href^="#"]');
+  if (!links.length) return;
+  var targets = [];
+  for (var i = 0; i < links.length; i++) {
+    var id = decodeURIComponent(links[i].getAttribute('href').slice(1));
+    var el = document.getElementById(id);
+    if (el) targets.push({ el: el, link: links[i] });
+  }
+  if (!targets.length) return;
+  var offset = 80;
+  function sync() {
+    var y = window.scrollY + offset;
+    var current = targets[0];
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].el.offsetTop <= y) current = targets[i];
+    }
+    for (var j = 0; j < targets.length; j++) {
+      targets[j].link.classList.toggle('active', targets[j] === current);
+    }
+  }
+  sync();
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if (!ticking) {
+      window.requestAnimationFrame(function(){ sync(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
 })();
 </script>
 </body>
