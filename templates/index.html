@@ -5,12 +5,23 @@
 {% set posts = get_section(path="posts/_index.md") %}
 {% if posts.pages | length > 0 %}
 <h2>&gt; posts</h2>
+{% set limit = config.extra.homepage_post_limit | default(value=0) %}
+{% if limit > 0 and posts.pages | length > limit %}
+  {% set shown = posts.pages | slice(end=limit) %}
+{% else %}
+  {% set shown = posts.pages %}
+{% endif %}
+{% set remaining = posts.pages | length - shown | length %}
 <ul class="post-list">
-{% for page in posts.pages %}
+{% for page in shown %}
 <li><time datetime="{{ page.date }}">{{ page.date | date(format="%Y-%m-%d") }}</time> · <a href="{{ page.permalink | safe }}">{{ page.title }}</a></li>
 {% endfor %}
 </ul>
+{% if remaining > 0 %}
+<p><a href="/posts/">see all {{ posts.pages | length }} posts →</a></p>
+{% else %}
 <p><a href="/posts/">all posts →</a></p>
+{% endif %}
 {% endif %}
 
 {% if config.extra.github or config.extra.linkedin or config.extra.email %}

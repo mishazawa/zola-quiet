@@ -61,11 +61,12 @@ degrades cleanly if a key isn't set.
 
 | Key                       | Used by               | Effect |
 |---------------------------|-----------------------|--------|
-| `extra.author`            | `<meta>`, footer line | "© YEAR <author>" |
-| `extra.github`            | `index.html`, footer  | GitHub icon + connect link |
-| `extra.linkedin`          | `index.html`, footer  | LinkedIn icon + connect link |
-| `extra.email`             | `index.html`, footer  | Mail icon + connect link |
-| `extra.ascii_signature`   | `base.html` sidebar   | Multi-line ASCII shown as a quiet signature above the content |
+| `extra.author`              | `<meta>`, footer line | "© YEAR <author>" |
+| `extra.github`              | `index.html`, footer  | GitHub icon + connect link |
+| `extra.linkedin`            | `index.html`, footer  | LinkedIn icon + connect link |
+| `extra.email`               | `index.html`, footer  | Mail icon + connect link |
+| `extra.ascii_signature`     | `base.html` sidebar   | Multi-line ASCII shown as a quiet signature above the content |
+| `extra.homepage_post_limit` | `index.html`          | Cap the front-page post list to N most recent posts. When more exist, a "see all M posts →" link appears below the list. Unset or `0` shows every post. |
 
 Example:
 

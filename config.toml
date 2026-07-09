@@ -23,6 +23,10 @@ author = "you"
 github = ""
 linkedin = ""
 email = ""
+# Cap the front-page post list to the N most recent posts. When the
+# archive grows past N, a "see all M posts →" link appears below the
+# list. Leave unset (or 0) to show every post on the front page.
+# homepage_post_limit = 7
 # Optional multi-line ASCII shown as a quiet signature above the content.
 # Leave empty to omit the sidebar entirely.
 ascii_signature = """
