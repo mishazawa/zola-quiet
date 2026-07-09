@@ -83,6 +83,22 @@ ascii_signature = """
 """
 ```
 
+## Shareable heading anchors
+
+The theme ships an `anchor-link.html` override that renders as a
+dim `>` character before the heading text. To enable, set
+`insert_anchor_links = "left"` in a page's frontmatter (or the
+section's `_index.md`, where it applies as a default to all pages
+in the section):
+
+```toml
+insert_anchor_links = "left"
+```
+
+Zola then inserts a `<a class="header-anchor" href="#slug">&gt;</a>`
+before every `h2`/`h3`/etc. The CSS in `static/style.css` styles it
+to look like a subtle prefix — dim by default, coloured on hover.
+
 ## Syntax highlighting
 
 The theme is wired for Zola 0.22+ class-mode syntax highlighting,

@@ -292,6 +292,20 @@ article h1 {
   font-weight: 400;
 }
 
+/* shareable anchor prefix on headings — Zola inserts an <a> before each
+   heading when `insert_anchor_links = "left"`; our custom
+   templates/anchor-link.html emits `>` as the text. Style it to look like
+   the dim `> ` prefix we used to type into markdown by hand. */
+.header-anchor {
+  color: var(--fg-dim);
+  text-decoration: none;
+  margin-right: 0.35em;
+  font-weight: inherit;
+}
+.header-anchor:hover {
+  color: var(--link);
+}
+
 /* post content images — never overflow the content column */
 .post-content img,
 article img {
