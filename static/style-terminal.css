@@ -360,3 +360,10 @@ figure.xkcd figcaption em {
   height: 16px;
   display: block;
 }
+
+/* post content media — never overflow the content column */
+.post-content img, .post-content video, .post-content iframe,
+article img, article video, article iframe {
+  max-width: 100%;
+  height: auto;
+}
