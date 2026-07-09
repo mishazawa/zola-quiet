@@ -1,26 +1,32 @@
 :root {
-  --fg: #1a1a1a;
-  --fg-dim: #555;
-  --bg: #fdfdfd;
-  --accent: #0a6ebd;
-  --rule: #ddd;
+  --fg: #24292f;
+  --fg-dim: #6e7781;
+  --bg: #faf9f7;
+  --accent: #0a69da;
+  --hot: #c2542e;
+  --rule: #d9d4cc;
+  --panel: #f2f0ec;
 }
 
 :root[data-theme="dark"] {
-  --fg: #d8d8d8;
-  --fg-dim: #888;
-  --bg: #121212;
-  --accent: #6cb6ff;
-  --rule: #2a2a2a;
+  --fg: #e6edf3;
+  --fg-dim: #8b949e;
+  --bg: #0d1117;
+  --accent: #79c0ff;
+  --hot: #f78c6c;
+  --rule: #30363d;
+  --panel: #161b22;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --fg: #d8d8d8;
-    --fg-dim: #888;
-    --bg: #121212;
-    --accent: #6cb6ff;
-    --rule: #2a2a2a;
+    --fg: #e6edf3;
+    --fg-dim: #8b949e;
+    --bg: #0d1117;
+    --accent: #79c0ff;
+    --hot: #f78c6c;
+    --rule: #30363d;
+    --panel: #161b22;
   }
 }
 
@@ -39,8 +45,8 @@ body {
 body {
   font-family:
     ui-monospace, "JetBrains Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
-  font-size: 17px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -117,6 +123,18 @@ h3 {
   color: var(--fg-dim);
 }
 
+/* shareable anchor prefix on headings — the > that Zola inserts before
+   each heading. Dim by default, warm on hover. */
+.header-anchor {
+  color: var(--fg-dim);
+  text-decoration: none;
+  margin-right: 0.35em;
+}
+.header-anchor:hover {
+  color: var(--hot);
+  text-decoration: none;
+}
+
 p {
   margin: 0.6rem 0;
 }
@@ -149,7 +167,8 @@ pre.whoami {
 }
 
 pre {
-  background: var(--rule);
+  background: var(--panel);
+  border: 1px solid var(--rule);
   padding: 0.75rem 1rem;
   overflow-x: auto;
   font-size: 13px;
@@ -157,13 +176,15 @@ pre {
 }
 
 code {
-  background: var(--rule);
+  background: var(--panel);
+  border: 1px solid var(--rule);
   padding: 0 0.3ch;
   border-radius: 2px;
   font-size: 0.95em;
 }
 pre code {
   background: transparent;
+  border: 0;
   padding: 0;
 }
 
