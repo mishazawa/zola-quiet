@@ -306,6 +306,13 @@ article h1 {
   color: var(--link);
 }
 
+/* the docs/handbook TOC sidebar is a terminal-skin-only feature; hide
+   it entirely on the primary Minima skin so it doesn't render above the
+   article. */
+.toc-sidebar {
+  display: none;
+}
+
 /* post content media — never overflow the content column */
 .post-content img, .post-content video, .post-content iframe,
 article img, article video, article iframe {

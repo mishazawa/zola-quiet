@@ -54,6 +54,7 @@
   </button>
 </div>
 <div class="layout">
+{% block sidebar %}
 {% if config.extra.ascii_signature %}
 <aside class="sidebar">
 <pre class="ascii" aria-hidden="true">
@@ -61,7 +62,7 @@
 </pre>
 </aside>
 {% endif %}
-{% block sidebar %}{% endblock %}
+{% endblock %}
 <div class="content">
 <main>
 {% block content %}{% endblock %}
@@ -128,6 +129,40 @@ syncSyntaxTheme();
     try { localStorage.setItem('theme', next); } catch(e){}
     syncSyntaxTheme();
   });
+})();
+
+/* TOC scroll-spy: highlights the TOC link whose target heading is
+   currently closest to the top of the viewport. No-op when there's no
+   TOC on the page. */
+(function(){
+  var links = document.querySelectorAll('.toc-list a[href^="#"]');
+  if (!links.length) return;
+  var targets = [];
+  for (var i = 0; i < links.length; i++) {
+    var id = decodeURIComponent(links[i].getAttribute('href').slice(1));
+    var el = document.getElementById(id);
+    if (el) targets.push({ el: el, link: links[i] });
+  }
+  if (!targets.length) return;
+  var offset = 80; /* pixels from top; heading is "active" once it crosses this */
+  function sync() {
+    var y = window.scrollY + offset;
+    var current = targets[0];
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].el.offsetTop <= y) current = targets[i];
+    }
+    for (var j = 0; j < targets.length; j++) {
+      targets[j].link.classList.toggle('active', targets[j] === current);
+    }
+  }
+  sync();
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if (!ticking) {
+      window.requestAnimationFrame(function(){ sync(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
 })();
 </script>
 </body>
