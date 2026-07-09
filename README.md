@@ -1,23 +1,21 @@
-# zola-quiet
+# zola-quiet — tui-look branch
 
-A quiet, two-skin Zola theme. Two stylesheets ship together — a
-Minima-flavoured typographic skin and a monospace terminal skin —
-and a runtime toggle in the top-right flips between them with the
-choice saved to `localStorage`. A second toggle handles light/dark
-in the same way.
+A third stylesheet on top of the base theme: a TUI/ncurses skin.
+Monospace everywhere, warm-paper light / near-black dark, an
+ASCII-drawn article frame (`┌── article ──` tab), `ls -la` styled
+post list, and a docs-style TOC pinned under the ASCII sidebar.
+The runtime skin toggle cycles minima → terminal → tui.
 
-No frameworks, no fonts hot-linked from a CDN, no analytics, no
-search, no comments. Static HTML out of Zola, two CSS files, two
-tiny inline scripts.
-
-![zola-quiet screenshot](screenshot.png)
+![zola-quiet tui-look screenshot](screenshot-tui.png)
 
 ## What you get
 
-- **Two skins.** `style.css` is the default (Minima-flavoured —
+- **Three skins.** `style.css` is the default (Minima-flavoured —
   system sans, ~740 px column, weight-400 headings, blue links).
   `style-terminal.css` is the alternate (monospace everywhere,
   `→ ` list markers, side-by-side sidebar on desktop).
+  `style-tui.css` is this branch's addition (ASCII article frame,
+  `-rw-r--r--` post list, on-page TOC in the sidebar).
 - **Light/dark toggle.** Sun/moon icon, system-preference default,
   flash-free on cold loads (the choice is applied to `<html>`
   before the stylesheet is fetched).
