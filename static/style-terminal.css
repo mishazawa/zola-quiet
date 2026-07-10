@@ -62,6 +62,9 @@ body {
 .sidebar {
   flex-shrink: 0;
   width: max-content;
+  position: sticky;
+  top: 2rem;
+  align-self: flex-start;
 }
 
 .sidebar .ascii {
@@ -89,6 +92,10 @@ main {
     flex-direction: column;
     gap: 1rem;
     margin-top: 2rem;
+  }
+  .sidebar {
+    position: static;
+    width: auto;
   }
   .sidebar .ascii {
     font-size: 9px;
