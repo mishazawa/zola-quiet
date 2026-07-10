@@ -14,6 +14,7 @@
   --fg-dim: #6c6c6c;
   --bg: #f0eee6;
   --panel: #e6e2d5;
+  --code-bg: #ebe4c9;     /* parchment; distinct from --panel */
   --accent: #4d803a;      /* muted green */
   --accent-alt: #a86f27;  /* amber / warning */
   --border: #4c4c4c;
@@ -27,6 +28,7 @@
   --fg-dim: #767676;
   --bg: #0f0f10;
   --panel: #17171a;
+  --code-bg: #1a1611;     /* warmer near-black; distinct from --panel */
   --accent: #a8cc8c;
   --accent-alt: #e5c07b;
   --border: #4c4c4c;
@@ -40,6 +42,7 @@
     --fg-dim: #767676;
     --bg: #0f0f10;
     --panel: #17171a;
+    --code-bg: #1a1611;
     --accent: #a8cc8c;
     --accent-alt: #e5c07b;
     --border: #4c4c4c;
@@ -60,6 +63,11 @@ body {
     ui-monospace, "JetBrains Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
   font-size: 14px;
   line-height: 1.5;
+  /* prevent mobile browsers from inflating font sizes on rotate / narrow
+     viewports (perceived as "zoomed in") */
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /* --- layout: flex-row, sidebar-left + content-right. ASCII and (on
@@ -97,6 +105,9 @@ main { max-width: 72ch; }
   .layout { flex-direction: column; gap: 1ch; }
   .sidebar { position: static; width: auto; }
   .sidebar .toc { display: none; } /* skip TOC on narrow viewports */
+  /* bump body up on phones — 14px monospace reads too small at
+     fit-to-screen next to minima's 16px sans. Keep desktop at 14px. */
+  body { font-size: 16px; }
 }
 
 /* --- typography ---------------------------------------------------- */
@@ -178,6 +189,44 @@ article .post-meta {
   font-size: 0.9em;
 }
 
+/* --- tag chips (mirrors the minima look; palette follows TUI) ------- */
+.tag-list {
+  margin: 2rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.tag-chip {
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--fg-dim);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 10px;
+  text-decoration: none;
+  line-height: 1.5;
+}
+.tag-chip::before {
+  content: "#";
+  opacity: 0.55;
+  margin-right: 1px;
+}
+.tag-chip:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  text-decoration: none;
+  background: transparent;
+}
+.tag-chip:visited {
+  color: var(--fg-dim);
+}
+.tag-chip:visited:hover {
+  color: var(--accent);
+}
+
 /* --- lists -------------------------------------------------------- */
 ul, ol {
   padding-left: 2ch;
@@ -202,10 +251,10 @@ blockquote {
 }
 blockquote > :last-child { margin-bottom: 0; }
 
-/* --- code / pre — subtle contrast panel with hard border ---------- */
+/* --- code / pre — elevated card, distinct from --panel ------------- */
 pre, code {
   font-family: inherit;
-  background: var(--bg);
+  background: var(--code-bg);
   border: 1px solid var(--border);
   color: var(--fg);
 }
@@ -217,6 +266,17 @@ pre {
   border-radius: 0;
 }
 pre code { background: transparent; border: 0; padding: 0; }
+
+/* When Zola class-mode highlighting is on, giallo paints .z-code with
+   a hard #FFFFFF (light) / #24292E (dark) background. Push it to the
+   same --panel used above so both cases match. */
+:root[data-skin="tui"] .z-code {
+  background-color: var(--code-bg);
+  color: var(--fg);
+}
+:root[data-skin="tui"] .z-hl {
+  background-color: var(--panel);
+}
 
 /* --- hr as dashed ASCII rule --------------------------------------- */
 hr {

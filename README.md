@@ -49,12 +49,11 @@ TUI/ncurses skin with ASCII article frame and on-page TOC:
   Visible eyebrow, left rule, tinted background, dark-mode aware.
 - **xkcd shortcode.** `{{ xkcd(num=…, title=…, alt=…) }}` renders a
   `<figure class="xkcd">` with CC BY-NC 2.5 attribution.
-- **Iframe `postMessage` protocol.** If you embed an interactive
-  visualiser as an iframe, the parent posts the current theme to
-  the child on load and on `data-theme` change; the child can post
-  height back to autosize the iframe. See your posts' iframe
-  blocks for the wiring (a copy-paste `<script>` snippet sits next
-  to each iframe).
+- **Visualiser iframe helpers.** Drop-in scripts under
+  `/visualizers/_shared/` handle the theme-sync `postMessage`
+  protocol so any iframe wires up in a couple of lines instead of
+  hand-rolling the listener each time. See
+  [_Embedding a visualiser_](#embedding-a-visualiser) below.
 - **Theme-aware syntax highlighting.** Opt-in: enable Zola's
   class-mode highlighting and pick a light/dark theme pair; the
   base template loads both `giallo-*.css` files and flips them in
@@ -119,6 +118,53 @@ insert_anchor_links = "left"
 Zola then inserts a `<a class="header-anchor" href="#slug">&gt;</a>`
 before every `h2`/`h3`/etc. The CSS in `static/style.css` styles it
 to look like a subtle prefix — dim by default, coloured on hover.
+
+## Embedding a visualiser
+
+If a post embeds an interactive visualiser as an iframe, the theme
+ships two small helpers under `/visualizers/_shared/` so the plumbing
+stays two `<script>` lines instead of a copy-pasted block.
+
+**On the post side**, mark the iframe with `data-viz-embed` and give
+it the height-message name the frame will post back:
+
+```html
+<iframe src="/visualizers/foo.html"
+        title="Foo visualiser"
+        loading="lazy"
+        style="width:100%;height:800px;border:1px solid var(--rule);
+               border-radius:6px;"
+        data-viz-embed
+        data-height-msg="foo-height"></iframe>
+<script src="/visualizers/_shared/viz-embed.js" defer></script>
+```
+
+`viz-embed.js` finds every `iframe[data-viz-embed]` on the page, sends
+`{theme, skin}` to it on load and whenever the parent's `data-theme` or
+`data-skin` change, and resizes the iframe when the frame posts a
+height back.
+
+**Inside the visualiser HTML**, load the frame-side helper (plus the
+optional TUI palette so the viz tracks the skin toggle):
+
+```html
+<link rel="stylesheet" href="/visualizers/_shared/viz-tui.css">
+<script src="/visualizers/_shared/viz-frame.js"
+        data-height-msg="foo-height"
+        data-size-selector=".wrap"
+        defer></script>
+```
+
+`viz-frame.js` mirrors `data-theme` / `data-skin` onto the frame's own
+`<html>` when it receives them, and posts the `.wrap` element's height
+back to the parent (change the selector via `data-size-selector`).
+Omit `data-height-msg` to skip height reporting entirely.
+
+`viz-tui.css` sets base CSS variables (`--bg`, `--panel`, `--text`,
+`--mark`, `--match`, `--danger`, etc.) for TUI light + dark. Each
+visualiser stays free to add its own semantic aliases (e.g. `--go:
+var(--mark);`) — the file only overrides when `data-skin="tui"` is on
+the frame root.
 
 ## Syntax highlighting
 

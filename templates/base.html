@@ -150,10 +150,17 @@ syncSyntaxTheme();
   if (!targets.length) return;
   var offset = 80;
   function sync() {
-    var y = window.scrollY + offset;
-    var current = targets[0];
-    for (var i = 0; i < targets.length; i++) {
-      if (targets[i].el.offsetTop <= y) current = targets[i];
+    var doc = document.documentElement;
+    var atBottom = window.scrollY + window.innerHeight >= doc.scrollHeight - 2;
+    var current;
+    if (atBottom) {
+      current = targets[targets.length - 1];
+    } else {
+      var y = window.scrollY + offset;
+      current = targets[0];
+      for (var i = 0; i < targets.length; i++) {
+        if (targets[i].el.offsetTop <= y) current = targets[i];
+      }
     }
     for (var j = 0; j < targets.length; j++) {
       targets[j].link.classList.toggle('active', targets[j] === current);

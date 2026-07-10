@@ -34,6 +34,17 @@ Nullam varius, turpis et commodo pharetra, est eros bibendum elit,
 nec luctus magna felis sollicitudin mauris. Integer in mauris eu
 nibh euismod gravida.
 
+<iframe
+  src="/visualizers/preview-demo.html"
+  title="Preview visualiser — bloom filter"
+  loading="lazy"
+  style="width:100%;border:1px solid var(--rule);border-radius:6px;height:420px;"
+  data-viz-embed
+  data-height-msg="preview-demo-height"
+  id="preview-demo-frame"></iframe>
+
+<script src="/visualizers/_shared/viz-embed.js" defer></script>
+
 ## &gt; nemo enim ipsam voluptatem
 
 Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a

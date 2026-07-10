@@ -66,7 +66,11 @@ body {
   -webkit-font-feature-settings: "kern" 1;
   font-feature-settings: "kern" 1;
   font-kerning: normal;
+  /* stop mobile browsers (Safari/Chromium/Firefox) from bumping up font
+     sizes on rotate / narrow viewports, which reads as "zoomed in" */
   -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   /* sticky footer: body fills viewport, layout/content/main grow so the
      footer pins to the bottom on short pages */
   min-height: 100vh;
@@ -96,10 +100,14 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
+  /* allow the flex item to shrink below its content's natural width so
+     media rules (max-width: 100%) actually cap wide images on mobile */
+  min-width: 0;
 }
 main {
   max-width: none;
   flex: 1 0 auto;
+  min-width: 0;
 }
 
 /* the ASCII sidebar — stacked above the content on all viewports
@@ -303,15 +311,19 @@ article h1 {
   color: var(--link);
 }
 
-/* the on-this-page TOC lives inside .sidebar on the terminal + tui skins.
-   Hide it on the primary Minima skin so it doesn't render at all. */
-.sidebar .toc {
-  display: none;
+/* the on-this-page TOC lives inside .sidebar on the TUI skin. Hide it
+   everywhere on the primary Minima skin (desktop and mobile) so it
+   doesn't render at all. Selector is deliberately broad to survive any
+   future layout shuffle. */
+.sidebar .toc,
+nav.toc,
+.toc {
+  display: none !important;
 }
 
-/* post content media — never overflow the content column */
-.post-content img, .post-content video, .post-content iframe,
-article img, article video, article iframe {
+/* media — never overflow the content column. Broad rule so it also
+   catches images on index / section / taxonomy pages, not just posts. */
+img, video, iframe {
   max-width: 100%;
   height: auto;
 }
