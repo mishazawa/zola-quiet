@@ -78,7 +78,7 @@ body {
   display: flex;
   gap: 2ch;
   align-items: flex-start;
-  max-width: calc(72ch + 24ch + 2ch);
+  max-width: calc(88ch + 24ch + 2ch);
   margin: 3ch auto 4ch;
   padding: 0 2ch;
 }
@@ -99,10 +99,18 @@ body {
   background: transparent;
 }
 .content { flex: 1; min-width: 0; }
-main { max-width: 72ch; }
+/* min-width: 0 lets main shrink below its content's intrinsic width
+   (e.g., a long code block or unbreakable inline token) so it never
+   pushes the layout past the viewport on narrow screens */
+main { max-width: 88ch; min-width: 0; }
 
 @media (max-width: 900px) {
-  .layout { flex-direction: column; gap: 1ch; }
+  /* stack the sidebar over the content and stretch children to the
+     container width. Default align-items: flex-start (from desktop)
+     lets children size to their own content, which was making .content
+     as wide as the widest <pre> line and pushing the article past the
+     viewport. */
+  .layout { flex-direction: column; gap: 1ch; align-items: stretch; }
   .sidebar { position: static; width: auto; }
   .sidebar .toc { display: none; } /* skip TOC on narrow viewports */
   /* bump body up on phones — 14px monospace reads too small at
@@ -155,6 +163,11 @@ article {
   background: var(--panel);
   padding: 1.6em 2ch 1.2em;
   margin: 0 0 2em;
+  /* long inline code / URLs / hostnames would otherwise push the article
+     wider than a phone viewport and clip the frame's right edge */
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  min-width: 0;
 }
 article::before {
   content: "┌── article ──";
