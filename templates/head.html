@@ -30,6 +30,9 @@ current_title = section.title ~ config_title %} {% else %} {% set current_title
 <meta property="og:image" content="{{ get_url(path=config.extra.og_image) }}" />
 {% endif %}
 
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
 <!-- Twitter Sharing Cards -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="{{ current_title }}" />
