@@ -1,6 +1,8 @@
 {% if page.description %} {% set current_desc = page.description %} {% elif
-section.description %} {% set current_desc = section.description %} {% else %}
-{% set current_desc = config.extra.description %} {% endif %}
+page.summary %} {% set current_desc = page.summary | striptags |
+truncate(length=160) %} {% elif page.content %} {% set current_desc =
+page.content | striptags | truncate(length=160) %} {% else %} {% set
+current_desc = config.extra.description %} {% endif %}
 <!--  -->
 
 {% if config.extra.title %} {% set config_title = " | " ~ config.extra.title%}
