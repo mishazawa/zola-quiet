@@ -18,3 +18,4 @@ linkedin = ""            # username; renders a LinkedIn icon in the footer
 email = ""               # address; renders a mail icon in the footer
 ascii_signature = ""     # optional multi-line ASCII art shown above content
 homepage_post_limit = 0  # cap the front-page post list; 0/unset shows all
+title= ""
