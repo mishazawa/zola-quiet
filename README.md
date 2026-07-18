@@ -65,7 +65,7 @@ TUI/ncurses skin with ASCII article frame and on-page TOC:
 
 ```bash
 cd your-site
-git submodule add https://github.com/johnnybravo-xyz/zola-quiet themes/zola-quiet
+git submodule add https://github.com/mishazawa/zola-quiet themes/zola-quiet
 ```
 
 Then in your `config.toml`:
@@ -87,6 +87,7 @@ degrades cleanly if a key isn't set.
 | `extra.email`               | `index.html`, footer  | Mail icon + connect link |
 | `extra.ascii_signature`     | `base.html` sidebar   | Multi-line ASCII shown as a quiet signature above the content |
 | `extra.homepage_post_limit` | `index.html`          | Cap the front-page post list to N most recent posts. When more exist, a "see all M posts →" link appears below the list. Unset or `0` shows every post. |
+| `extra.title`              | `<meta>` | Tab text |
 
 Example:
 
@@ -101,6 +102,7 @@ ascii_signature = """
 ░░ HELLO  ░░
 ░░░░░░░░░░░░
 """
+title = "My site"
 ```
 
 ## Shareable heading anchors
